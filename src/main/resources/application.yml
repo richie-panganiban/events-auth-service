@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: birthday-invitation-api
+
+  profiles:
+    active: dev
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 8080
+
+# Application configuration
+app:
+  frontend-url: ${FRONTEND_URL:http://localhost:5173}
+  admin-magic-link-expiry-minutes: 15
+  guest-session-validity-days: 60
+  admin-session-validity-days: 7
+
+# CORS configuration
+cors:
+  allowed-origins:
+    - http://localhost:5173
+    - http://localhost:3000
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true
+
+logging:
+  level:
+    com.birthday.invitation: DEBUG
+    org.springframework.security: DEBUG
+    org.testcontainers: INFO
