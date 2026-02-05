@@ -78,6 +78,17 @@ public class SecurityConfig {
 
     @Bean
     @Order(3)
+    public SecurityFilterChain publicSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/", "/favicon.ico", "/actuator/**")
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+
+        return http.build();
+    }
+
+    @Bean
+    @Order(4)
     public SecurityFilterChain h2ConsoleSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/h2-console/**")
