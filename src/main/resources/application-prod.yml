@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT:5432}/${DB_NAME}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://${PGHOST}:${PGPORT:5432}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -13,11 +13,47 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
 
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: ${PORT:8080}
+
+# Application configuration
+app:
+  frontend-url: ${FRONTEND_URL:https://unang-kaarawan-ni-roc.co}
+  admin-magic-link-expiry-minutes: 15
+  guest-session-validity-days: 60
+  admin-session-validity-days: 7
+
+# CORS - allow the frontend domain
 cors:
   allowed-origins:
-    - ${FRONTEND_URL}
-  allow-credentials: true
+    - https://unang-kaarawan-ni-roc.co
+    - https://www.unang-kaarawan-ni-roc.co
+
+# Actuator for health checks
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
 
 logging:
   level:
